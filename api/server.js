@@ -14,11 +14,11 @@ app.use(json());
 import negotiate from './middlewares/negotiate.js';
 app.use(negotiate);
 
-import usersRoute from './routers/usersRoutes.js';
-app.use('/users', /*validateToken,*/ usersRoute);
+import userRoute from './routers/userRoutes.js';
+app.use('/user', /*validateToken,*/ userRoute);
 
-import wallpapersRoute from './routers/wallpapersRoutes.js'
-app.use('/wallpapers', wallpapersRoute) 
+import wallpaperRoute from './routers/wallpaperRoutes.js'
+app.use('/wallpaper', wallpaperRoute) 
 
 import commentRoute from './routers/commentRoutes.js';
 app.use('/comment', commentRoute);

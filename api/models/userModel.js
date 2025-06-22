@@ -1,4 +1,4 @@
-import { query } from "../db/pool.js";
+import pool from "../db/pool.js";
 import { createHash } from "crypto";
 
 const SALT = "monGrainDeCummin";
@@ -39,7 +39,7 @@ export async function fetchUserById(id) {
   return queryResult.rows[0];
 }
 
-export async function createUser(user) {
+export async function insertUser(user) {
   // console.log('user: ',user)
   const insertSql = `INSERT INTO users ("email", "passHash", "firstName", "lastName") 
                       VALUES ($1, $2, $3, $4)

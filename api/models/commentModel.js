@@ -1,4 +1,4 @@
-import { query } from "../db/pool.js";
+import pool from "../db/pool.js";
 
 function hasAffectedOne(id, action, queryResult) {
   const withId = id !== null ? ` for id ${id}` : "";
@@ -10,7 +10,7 @@ function hasAffectedOne(id, action, queryResult) {
   }
 }
 
-export async function fetchCommentsByWallpaper() {
+export async function fetchAllCommentsByWallpaper() {
   return 'fetchCommentByWallpaper niy'
   const selectSql = `SELECT "id", "authorId", "created", "published", "title", "excert"
                             FROM posts 
@@ -19,8 +19,8 @@ export async function fetchCommentsByWallpaper() {
   return queryResult.rows;
 };
 
-export async function fetchCommentsByUser(id) {
-  return 'fetchCoomentsByUser niy'
+export async function fetchAllCommentsByUser(id) {
+  return 'fetchAllCommentsByUser niy'
   const selectSql = `SELECT "authorId", "created", "published", "title", "excert", "content"
                             FROM posts 
                             WHERE id = $1`;

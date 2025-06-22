@@ -47,7 +47,7 @@ CREATE UNIQUE INDEX uidx_users_email ON "users"("email");
 INSERT INTO "users" ("email", "passhash") VALUES
 ('f', 'f'),
 ('fh', ENCODE (SHA256('fh'), 'hex')),
-('u', 'u')
+('u', 'u'),
 ('uh', ENCODE (SHA256('uh'), 'hex')),
 ('a', 'a');
 ('ah', ENCODE (SHA256('ah'), 'hex'));

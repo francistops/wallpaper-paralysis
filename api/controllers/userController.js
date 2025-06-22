@@ -1,4 +1,11 @@
-import { } from "../models/userModel.js";
+import { 
+  fetchAllUsers,
+  fetchUserById,
+  insertUser,
+  isUserValid,
+  fetchDetailsByEmail,
+  logoutByToken
+} from "../models/userModel.js";
 import { assignToken } from "../models/tokenModel.js";
 
 const UNKNOWN_ERROR = {
@@ -29,7 +36,7 @@ export async function getUserById(req, res) {
   const { id } = req.params;
 
   try {
-    const user = await fetchById(id);
+    const user = await fetchUserById(id);
 
     result = {
       message: "Success",
@@ -46,7 +53,7 @@ export async function getUserById(req, res) {
   res.formatView(result);
 }
 
-export async function subscribe(req, res) {
+export async function registerUser(req, res) {
   //console.log("---in userController subscribe---");
 
   let result = UNKNOWN_ERROR;
@@ -54,7 +61,7 @@ export async function subscribe(req, res) {
   //console.log(newUser);
 
   try {
-    const createdUser = await createUser(newUser);
+    const createdUser = await insertUser(newUser);
     // console.log('after model', createdUser);
     result = {
       message: "Success",
@@ -71,7 +78,7 @@ export async function subscribe(req, res) {
   res.formatView(result);
 }
 
-export async function login(req, res) {
+export async function loginUser(req, res) {
   console.log("---in userController login---");
   // console.log("body: ", req.body);
   let result = UNKNOWN_ERROR;
@@ -103,7 +110,7 @@ export async function login(req, res) {
   res.formatView(result);
 }
 
-export async function logout(req, res) {
+export async function logoutUser(req, res) {
   // console.log('--- in logout ctrl---');
   let result = UNKNOWN_ERROR;
 
@@ -124,34 +131,6 @@ export async function logout(req, res) {
 
   } catch (error) {
     // console.error("DB error", error);
-    result.message = `Database error ${error}`;
-    result.errorCode = 1001;
-    res.status(500);
-  }
-  res.formatView(result);
-}
-
-export async function deleteAccount(req, res) {
-  // console.log('--- in deleteAccount ---');
-  let result = UNKNOWN_ERROR;
-
-  try {
-
-    const deleteConfirmation = await deleteAccountByToken(req.selectedToken);
-    // console.log('deleteBytoken deleteconfirm', deleteConfirmation)
-    if (deleteConfirmation) {
-    result = {
-      message: "Success",
-      errorCode: 0
-    };
-    } else {
-      result = {
-        message: "Failed",
-        errorCode: 1,
-      }
-    }
-  } catch (error) {
-    console.error("DB error", error);
     result.message = `Database error ${error}`;
     result.errorCode = 1001;
     res.status(500);

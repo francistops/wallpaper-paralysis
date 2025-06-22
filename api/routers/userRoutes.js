@@ -1,14 +1,19 @@
 import { Router } from 'express';
 const router = Router();
 import { validateToken } from '../middlewares/authGuard.js';
-import { getAllUsers, getUserById, register, login, logout } from '../controllers/userController.js';
+import {
+    getAllUsers,
+    getUserById,
+    registerUser,
+    loginUser,
+    logoutUser
+} from '../controllers/userController.js';
 
-router.get('/', getAllUsers);
+router.get('/'/*, validateToken*/, getAllUsers);
 router.get('/:id', getUserById);
 
-router.post('/register', register)
-router.post('/login', login)
-
-router.post('/logout', validateToken, logout)
+router.post('/register', registerUser);
+router.post('/login', loginUser)
+router.post('/logout', validateToken, logoutUser)
 
 export default router;

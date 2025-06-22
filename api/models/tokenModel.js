@@ -1,4 +1,4 @@
-import { query } from "../db/pool.js";
+import pool from "../db/pool.js";
 
 export async function isTokenValid(token) {
   const sql = `SELECT "expires", "tokenUuid"

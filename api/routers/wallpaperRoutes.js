@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 
-import { } from '../controllers/postController.js';
+import { getWallpaperDetails } from '../controllers/wallpaperController.js';
 
 
 router.get('/', getWallpaperDetails);
