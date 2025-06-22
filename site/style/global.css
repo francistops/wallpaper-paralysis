@@ -1,6 +1,11 @@
-html {
+body {
+  margin-inline: 2rem ;
   background-color: #111;
-  color: #eee;
+  color: white;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 .invisible {

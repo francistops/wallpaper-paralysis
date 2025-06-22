@@ -1,118 +1,82 @@
-class ListWallpapersElement extends HTMLElement {
+import { getWallpaperUrl } from "../../script/auth.js";
+
+class ListWallpapers extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-  }
-
-  async loadContent() {
-    const [html, css] = await Promise.all([
-      fetch("/wc/list-wallpapers/list-wallpapers.html").then((res) => res.text()),
-      fetch("/wc/list-wallpapers/list-wallpapers.css").then((res) => res.text()),
-    ]);
-
-    const style = document.createElement("style");
-    style.textContent = css;
-
-    const template = document.createElement("template");
-    template.innerHTML = html;
-
-    this.shadowRoot.appendChild(style);
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.wallpaper = {}  
   }
 
   async connectedCallback() {
-    await this.loadContent();
-
-    try {
-      const response = await fetch("https://api.francis.ca/wallpapers");
-      console.log(response)
-      if (response = 401) {
-        throw new Error(`Error 401: Unauthorized access. 
-          Are you trying to access NSFW wallpaper without an api key? 
-          or if your api key is valid. ${response.status}`)
-      } else if (response = 429) {
-        throw new  Error(`Error 429: Too many requests limited at 45 per minute. ${response.status}`)
-      } else if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const wallpapersJson = await response.json();
-      // const apiErrorCodes = [401]
-
-      const tableBodyTag = this.shadowRoot.querySelector("tbody");
-
-      if (wallpapersJson.error != null) {
-        data.forEach((wallpaper, index) => {
-          this.addData(wallpaper);
-        });
-      } else {
-        throw new Error(`API return an error`);
-      }
-    } catch (error) {
-      console.log(`Oops: ${error}`);
-    }
-
-    const createBtn = this.shadowRoot.getElementById("fetch-wallpapers-btn");
-    createBtn.addEventListener("click", (e) => {
-      const event = new CustomEvent("ready-fetch-wallpapers", {
-        detail: {
-          wallpapers: {
-            wallpaperID: wallpaper.id,
-            wallpaperUrl: wallpaper.url
-          }
-        },
-        bubbles: true,
-        composed: true,
-      });
-
-      this.dispatchEvent(event);
-    });
+    console.log('connected')
+    this.wallpaper = await this.fetchWallpaperUrl()
+    console.log('about to render this: ', this.wallpaper)
+    this.render(this.wallpaper)
+  }
+  disconnectedCallback() {
+    console.log('disconnected')
   }
 
-  
-// not implement yet
-  // likeWallpaper(id, wallpaper) {
-  //   // console.log('publishData wallpaper', wallpaper)
-  //   const row = this.shadowRoot.getElementById(id);
-  //   const columns = row.querySelectorAll("td");
+  async fetchWallpaperUrl() {
+    const result = await getWallpaperUrl();
+    console.log('WC result: ', result)
+    return result
+    //if result ok todo
 
-  //   columns[2].innerHTML = "✓";
-  // }
+  }
 
-  addData(wallpaper) {
-    // console.log('addData wallpaper = ', wallpaper)
-    const cardsDiv = this.shadowRoot.getElementById("wallpapers-gallery");
+  render(state) {
+    let color = "gray";
+    let text = "Chargement...";
 
-    const cardBox = document.createElement("div")
-    cardBox.classList.add("card-class")
-    const wallpaperImgtag = document.createElement("img");
-    const urlPTag = document.createElement("p")
-    wallpaperImgtag.setAttribute("scr", wallpaper.url)
-    urlPTag.innerHTML = wallpaper.url;
-
-    // const likeWallpaperBtn = document.createElement("button");
-    // if (wallpaper.like !== null) {
-    //   likeWallpaperBtn.innerHTML = "✓";
-    // } else {
-    //   likeWallpaperBtn.innerHTML = "like?";
-    //   likeWallpaperBtn.addEventListener("click", (e) => {
-    //     const event = new CustomEvent("ready-like", {
-    //       detail: {
-    //         id: wallpaper.id,
-    //       },
-    //       bubbles: true,
-    //       composed: true,
-    //     });
-
-    //     this.dispatchEvent(event);
-    //   });
-    //   tdHasBeenPublished.appendChild(likeWallpaperBtn);
+    // if (state === "online") {
+    //   color = "green";
+    //   text = "En fonction";
+    // } else if (state === "offline") {
+    //   color = "red";
+    //   text = "Hors ligne";
     // }
 
-    cardsDiv.appendChild(cardBox)
-    cardBox.appendChild(wallpaperImgtag)
-    cardBox.appendChild(urlPTag)
+    // console.log(state)
+    // console.log(state.data)
+    // console.log(state.data.url)
+    // console.log(state.url)
+    const wallpaper_tag = document.createElement('img')
+    wallpaper_tag.setAttribute('src', state.data.url)
+
+    this.shadowRoot.innerHTML = `
+      <style>
+        #wallpapers-gallery {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5em;
+        }
+        #wallpapers-row {
+          display: flex;
+          align-items: center;
+          gap: 0.5em;
+        }
+      </style>
+      <div class="status">
+        <div class="state">
+          <span class="dot"></span>
+          <span>${text}</span>
+        </div>
+    
+      </div>
+      <div id="pager-wrapper">
+        <button id="fetch-wallpapers-btn">fetch wallpapers</button>
+      </div>
+      <div id="wallpapers-gallery">
+        <div id="wallpapers-row">
+        </div>
+
+      </div>
+    `;
+
+    const wallpaper_div = this.shadowRoot.getElementById('wallpapers-row')
+    wallpaper_div.appendChild(wallpaper_tag) 
   }
 }
 
-customElements.define("list-wallpapers", ListWallpapersElement);
+customElements.define("list-wallpapers", ListWallpapers);

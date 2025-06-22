@@ -1,10 +1,10 @@
 window.addEventListener("load", (e) => {
-  displayHeartbeat();
+  displayGallery();
 });
 
-function displayHeartbeat() {
+function displayGallery() {
   const mainTag = document.querySelector("main");
-  const heartbeatStatus_WC = document.createElement("p");
+  const WC = document.createElement("list-wallpapers");
   mainTag.innerHTML = "";
-  mainTag.appendChild(heartbeatStatus_WC);
+  mainTag.appendChild(WC);
 }

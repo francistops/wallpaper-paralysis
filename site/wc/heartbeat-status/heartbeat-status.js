@@ -1,10 +1,3 @@
-// used AI to get another way to do a WC, end up keeping it due to simplicy and readability.
-// it's remind me that I can create and use property.
-// got recommended setInterval by the AI and it made sense and operate similarly to a timeout.
-// a;so incorporate all the html in one method which is how I would think is the less tedious and more readeable based on our chat in class.
-
-
-
 import { sendHeartbeat } from "../../script/auth.js";
 
 class HeartbeatStatus extends HTMLElement {
@@ -38,7 +31,7 @@ class HeartbeatStatus extends HTMLElement {
     this.pending = true;
     this.totalPings++;
 
-    // pour le ?. it's kinda neat soo i had to include it https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
+    
     const result = await sendHeartbeat();
     if (result.status === "online" && result.data?.errorCode === 0) {
       this.successfulPings++;

@@ -4,10 +4,9 @@ const app = express();
 const PORT = 3000;
 
 import cors from "cors";
-app.use(cors());
-//app.use(cors({
-//    origin: ['https://amelieroussin.ca', 'https://www.amelieroussin.ca']
-//}));
+app.use(cors({
+   origin: ['https://ft.ca', 'https://www.ft.ca', 'https://wallhaven.cc', 'https://www.wallhaven.cc']
+}));
 
 app.use(json());
 
