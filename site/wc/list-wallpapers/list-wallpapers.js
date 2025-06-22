@@ -13,9 +13,9 @@ class ListWallpapers extends HTMLElement {
     console.log('about to render this: ', this.wallpaper)
     this.render(this.wallpaper)
   }
-  disconnectedCallback() {
-    console.log('disconnected')
-  }
+  // disconnectedCallback() {
+  //   console.log('disconnected')
+  // }
 
   async fetchWallpaperUrl() {
     const result = await getWallpaperUrl();
@@ -42,10 +42,14 @@ class ListWallpapers extends HTMLElement {
     // console.log(state.data.url)
     // console.log(state.url)
     const wallpaper_tag = document.createElement('img')
-    wallpaper_tag.setAttribute('src', state.data.url)
+    wallpaper_tag.setAttribute('src', state.data.path)
 
     this.shadowRoot.innerHTML = `
       <style>
+        img {
+          max-width: 500px;
+          max-height: fit-content;
+        }
         #wallpapers-gallery {
           display: flex;
           flex-direction: column;
@@ -69,6 +73,7 @@ class ListWallpapers extends HTMLElement {
       </div>
       <div id="wallpapers-gallery">
         <div id="wallpapers-row">
+          <img src="${state.data.path}">
         </div>
 
       </div>

@@ -11,3 +11,8 @@ html {
 .invisible {
   display: none;
 }
+
+img {
+  max-width: 500px;
+  max-height: fit-content;
+}
