@@ -4,7 +4,7 @@ window.addEventListener("load", (e) => {
 
 function displayHeartbeat() {
   const mainTag = document.querySelector("main");
-  const heartbeatStatus_WC = document.createElement("heartbeat-status");
+  const heartbeatStatus_WC = document.createElement("p");
   mainTag.innerHTML = "";
   mainTag.appendChild(heartbeatStatus_WC);
 }
